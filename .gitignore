@@ -1,0 +1,31 @@
+# ROS2 colcon build system
+build/
+install/
+log/
+
+# CMake build artifacts
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+*.cmake
+Makefile
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+
+# VSCode / IDEs
+.vscode/
+.idea/
+
+# Colcon test result logs
+test_results/
+
+# Misc
+*.swp
+*.swo
+.DS_Store
