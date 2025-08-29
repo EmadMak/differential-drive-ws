@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="differential_drive_robot">
+
+<!--- Constants -->  
+<xacro:property name="pi" value="3.14159265" />
+
+<!--- Body dimensions -->
+<xacro:property name="a" value="1" />
+<xacro:property name="b" value="0.3" />
+<xacro:property name="c" value="0.6" />
+
+<!--- Wheel and castor dimensions -->
+<xacro:property name="r" value="0.15" />
+<xacro:property name="d" value="0.1" />
+
+
+<xacro:property name="s1" value="${b/2+r}" />
+<xacro:property name="s2" value="${2*r}" />
+<xacro:property name="s3" value="${2*r}" />
+<xacro:property name="s4" value="${c/2+d/2}" />
+
+<!--- Densities -->
+<xacro:property name="d1" value="2710.0" />
+<xacro:property name="d2" value="2710.0" />
+<xacro:property name="d3" value="2710.0" />
+
+<!--- Masses-->
+<!--- body -->
+<xacro:property name="m1" value="${d1*a*b*c}" />
+<!--- wheel -->
+<xacro:property name="m2" value="${d2*pi*r*r*d}" />
+<!--- caster -->
+<xacro:property name="m3" value="${d3*(4.0/3.0)*pi*r*r*r}" />
+
+<!--- Moments of inertia for the robot body -->
+<xacro:property name="Ix_body" value="${(1/12)*m1*(b*b+c*c)}" />
+<xacro:property name="Iy_body" value="${(1/12)*m1*(b*b+a*a)}" />
+<xacro:property name="Iz_body" value="${(1/12)*m1*(a*a+c*c)}" />
+
+<!--- Moments of inertia for the wheel -->
+<xacro:property name="Iz_wheel" value="${0.5*m2*r*r}" />
+<xacro:property name="I_wheel" value="${(1.0/12.0)*m2*(3.0*r*r+d*d)}" />
+
+<!--- Moments of inertia for the caster sphere -->
+<xacro:property name="I_castor" value="${(2.0/5.0)*m3*r*r}" />
+
+<xacro:macro name="inertia_body">
+    <inertial>
+        <origin rpy="0 0 0" xyz="0 0 ${s1}"/>
+        <mass value="${m1}"/>
+        <inertia ixx="${Ix_body}" ixy="0.0" ixz="0.0" iyy="${Iy_body}" iyz="0.0" izz="${Iz_body}"/>
+    </inertial>
+</xacro:macro>
+
+<xacro:macro name="inertia_wheel">
+    <inertial>
+        <origin rpy="1.570795 0 0" xyz="0 0 0" />
+        <mass value="${m2}"/>
+        <inertia ixx="${I_wheel}" ixy="0.0" ixz="0.0" iyy="${I_wheel}" iyz="0.0" izz="${Iz_wheel}"/>
+    </inertial>
+</xacro:macro>
+
+<xacro:macro name="inertia_caster">
+    <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <mass value="${m3}"/>
+        <inertia ixx="${I_castor}" ixy="0.0" ixz="0.0" iyy="${I_castor}" iyz="0.0" izz="${I_castor}"/>
+    </inertial>
+</xacro:macro>
+
+<xacro:include filename="$(find differential-drive-ws)/model/robot.gazebo" />
+
+<link name="base_footprint"> </link>
+<joint name="body_link_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="body_link"/>
+</joint>
+
+<link name="body_link">
+    <visual>
+        <geometry>
+            <box size="${a} ${b} ${c}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 ${s1}" />
+    </visual>
+
+    <collision>
+        <geometry>
+            <box size="${a} ${b} ${c}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 ${s1}" />
+    </collision>
+
+    <xacro:inertia_body />
+</link>
+
+
+
+</robot>
