@@ -69,7 +69,7 @@
     </inertial>
 </xacro:macro>
 
-<!--- <xacro:include filename="$(find differential_drive_description)/model/robot.gazebo" /> -->
+<xacro:include filename="$(find differential_drive_description)/model/robot.gazebo" />
 
 <link name="base_footprint"> </link>
 <joint name="body_link_joint" type="fixed">
