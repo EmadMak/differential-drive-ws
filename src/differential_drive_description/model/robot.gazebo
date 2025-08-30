@@ -35,7 +35,7 @@
     <wheel_separation>${2*s4}</wheel_separation>
     <wheel_diameter>${2*r}</wheel_diameter>
 
-    <max_linear_acceleration>10</max_linear_acceleration
+    <max_linear_acceleration>10</max_linear_acceleration>
 
     <topic>cmd_vel</topic>
     <tf_topic>/tf</tf_topic>
@@ -47,7 +47,7 @@
 </plugin>
 
 <plugin filename="gz-sim-joint-state-publisher-system"
-  name="gz::sim::system::JointStatePublisher">
+  name="gz::sim::systems::JointStatePublisher">
     <topic>joint_states</topic>
     <joint_name>wheel1_joint</joint_name>
     <joint_name>wheel2_joint</joint_name>
