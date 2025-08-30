@@ -11,6 +11,7 @@ def generate_launch_description():
     robot_xacro_name = "differential_drive_robot"
     name_package = "differential_drive_description"
     model_file_relative_path = "model/robot.xacro"
+    world_file__path = "/home/emad/differential-drive-ws/src/differential_drive_description/worlds/depo_world.sdf"
 
     path_model_file = os.path.join(get_package_share_directory(name_package), model_file_relative_path)
 
@@ -18,7 +19,7 @@ def generate_launch_description():
 
     gazebo_ros_package_launch = PythonLaunchDescriptionSource(os.path.join(get_package_share_directory("ros_gz_sim"), "launch", "gz_sim.launch.py"))
 
-    gazebo_launch = IncludeLaunchDescription(gazebo_ros_package_launch, launch_arguments={"gz_args": ["-r -v -v4 empty.sdf"], "on_exit_shutdown": "true"}.items())
+    gazebo_launch = IncludeLaunchDescription(gazebo_ros_package_launch, launch_arguments={"gz_args": [f"-r -v -v4 {world_file__path}"], "on_exit_shutdown": "true"}.items())
 
     spawn_model_node_gazebo = Node(
         package="ros_gz_sim",
