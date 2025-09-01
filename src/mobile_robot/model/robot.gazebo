@@ -5,21 +5,11 @@
 <gazebo reference="body_link">
     <mu1>0.2</mu1>
     <mu2>0.2</mu2>
-    <material>
-        <ambient>0 0 0 1</ambient>
-        <diffuse>0.3 0.8 0.3 1</diffuse>
-        <specular>0.1 0.1 0.1 1</specular>
-    </material>
 </gazebo>
 
 <gazebo reference="wheel1_link">
     <mu1>0.2</mu1>
     <mu2>0.2</mu2>
-    <material>
-        <ambient>0.2 0.6 0.2 1</ambient>
-        <diffuse>0.3 0.8 0.3 1</diffuse>
-        <specular>0.1 0.1 0.1 1</specular>
-    </material>
 </gazebo>
 
 <gazebo reference="wheel2_link">
@@ -74,12 +64,6 @@
 
 <!-- Lidar sensor-->
 
-<gazebo>
-    <plugin filename="gz-sim-sensors-system"
-      name="gz::sim::systems::Sensors">
-        <render_engine>ogre2</render_engine>
-    </plugin>
-</gazebo>
 
 <gazebo reference="lidar_link">
     <sensor name="gpu_lidar" type="gpu_lidar">
