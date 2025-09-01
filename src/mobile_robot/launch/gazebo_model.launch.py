@@ -9,9 +9,9 @@ import xacro
 
 def generate_launch_description():
     robot_xacro_name = "differential_drive_robot"
-    name_package = "differential_drive_description"
+    name_package = "mobile_robot"
     model_file_relative_path = "model/robot.xacro"
-    world_file__path = "/home/emad/differential-drive-ws/src/differential_drive_description/worlds/depo_world.sdf"
+    world_file__path = f"/home/emad/differential-drive-ws/src/{name_package}/worlds/depo_world.sdf"
 
     path_model_file = os.path.join(get_package_share_directory(name_package), model_file_relative_path)
 

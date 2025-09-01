@@ -5,25 +5,41 @@
 <gazebo reference="body_link">
     <mu1>0.2</mu1>
     <mu2>0.2</mu2>
-    <material>Gazebo/Black</material>
+    <material>
+        <ambient>0 0 0 1</ambient>
+        <diffuse>0.3 0.8 0.3 1</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+    </material>
 </gazebo>
 
 <gazebo reference="wheel1_link">
     <mu1>0.2</mu1>
     <mu2>0.2</mu2>
-    <material>Gazebo/Green</material>
+    <material>
+        <ambient>0.2 0.6 0.2 1</ambient>
+        <diffuse>0.3 0.8 0.3 1</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+    </material>
 </gazebo>
 
 <gazebo reference="wheel2_link">
     <mu1>0.2</mu1>
     <mu2>0.2</mu2>
-    <material>Gazebo/Green</material>
+    <material>
+        <ambient>0.2 0.6 0.2 1</ambient>
+        <diffuse>0.3 0.8 0.3 1</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+    </material>
 </gazebo>
 
 <gazebo reference="caster_link">
     <mu1>0.000002</mu1>
     <mu2>0.000002</mu2>
-    <material>Gazebo/Green</material>
+    <material>
+        <ambient>0.2 0.6 0.2 1</ambient>
+        <diffuse>0.3 0.8 0.3 1</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+    </material>
 </gazebo>
 
 <gazebo>
