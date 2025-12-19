@@ -1,8 +1,9 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration
 
 from launch_ros.actions import Node
 import xacro
@@ -11,7 +12,8 @@ def generate_launch_description():
     robot_xacro_name = "differential_drive_robot"
     name_package = "mobile_robot"
     model_file_relative_path = "model/robot.xacro"
-    world_file__path = f"/home/emad/differential-drive-ws/src/{name_package}/worlds/depo_world.sdf"
+    #world_file__path = f"/home/emad/differential-drive-ws/src/{name_package}/worlds/depo_world.sdf"
+    world_file_relative_path = "worlds/depot_world.sdf"
 
     path_model_file = os.path.join(get_package_share_directory(name_package), model_file_relative_path)
 
@@ -19,7 +21,8 @@ def generate_launch_description():
 
     gazebo_ros_package_launch = PythonLaunchDescriptionSource(os.path.join(get_package_share_directory("ros_gz_sim"), "launch", "gz_sim.launch.py"))
 
-    gazebo_launch = IncludeLaunchDescription(gazebo_ros_package_launch, launch_arguments={"gz_args": [f"-r -v -v4 {world_file__path}"], "on_exit_shutdown": "true"}.items())
+    path_world_file = os.path.join(get_package_share_directory(name_package), world_file_relative_path)
+    gazebo_launch = IncludeLaunchDescription(gazebo_ros_package_launch, launch_arguments={"gz_args": [f"-r -v -v4 {path_world_file}"], "on_exit_shutdown": "true"}.items())
 
     spawn_model_node_gazebo = Node(
         package="ros_gz_sim",
@@ -55,11 +58,77 @@ def generate_launch_description():
         output="screen"
     )
 
+    slam_params = os.path.join(
+        get_package_share_directory(name_package),
+        "parameters",
+        "mapper_params_online_async.yaml"
+    )
+
+    declare_launch_params = DeclareLaunchArgument(
+        "slam_params_file",
+        default_value=slam_params,
+        description="Full path to SLAM toolbox params"
+    )
+
+    slam_toolbox_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("slam_toolbox"),
+                "launch",
+                "online_async_launch.py"
+            )
+        ),
+        launch_arguments={
+            "slam_params_file": LaunchConfiguration("slam_params_file")
+        }.items()
+    )
+
+    rviz_config_file = os.path.join(
+        get_package_share_directory(name_package),
+        "rviz",
+        "map.rviz"
+    )
+
+    rviz_launch = Node(
+        package="rviz2",
+        executable="rviz2",
+        arguments=["-d", rviz_config_file]
+    )
+
+    nav2_params = os.path.join(
+        get_package_share_directory(name_package),
+        "parameters",
+        "nav2_params.yaml"
+    )
+
+    declare_launch_params = DeclareLaunchArgument(
+        "nav2_params_file",
+        default_value=nav2_params,
+        description="Full path to Nav2 params"
+    )
+
+    nav2_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(
+                get_package_share_directory("nav2_bringup"),
+                "launch",
+                "navigation_launch.py"
+            )
+        ),
+        launch_arguments={
+            "params_file": LaunchConfiguration("nav2_params_file")
+        }.items()
+    )
+
     launch_description_object = LaunchDescription()
 
     launch_description_object.add_action(gazebo_launch)
     launch_description_object.add_action(spawn_model_node_gazebo)
     launch_description_object.add_action(node_robot_state_publisher)
     launch_description_object.add_action(start_gazebo_ros_bridge_cmd)
+    launch_description_object.add_action(declare_launch_params)
+    launch_description_object.add_action(slam_toolbox_launch)
+    launch_description_object.add_action(nav2_launch)
+    launch_description_object.add_action(rviz_launch)
 
     return launch_description_object
