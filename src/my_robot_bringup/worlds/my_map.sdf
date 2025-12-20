@@ -1,0 +1,110 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="office_world">
+
+    <physics type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+
+    <plugin name='ignition::gazebo::systems::Physics' filename='libignition-gazebo-physics-system.so'/>
+    <plugin name='ignition::gazebo::systems::UserCommands' filename='libignition-gazebo-user-commands-system.so'/>
+    <plugin name='ignition::gazebo::systems::SceneBroadcaster' filename='libignition-gazebo-scene-broadcaster-system.so'/>
+    <plugin name='ignition::gazebo::systems::Imu' filename='ignition-gazebo-imu-system'/>
+    <plugin name='ignition::gazebo::systems::Sensors' filename='ignition-gazebo-sensors-system'>
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <scene>
+      <background>0.8 0.9 1 1</background>
+      <ambient>0.6 0.6 0.6 1</ambient>
+      <shadows>true</shadows>
+    </scene>
+
+    <light name="sun_light" type="directional">
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+      <cast_shadows>true</cast_shadows>
+    </light>
+
+    <model name="floor">
+      <static>true</static>
+      <link name="link">
+        <collision name="col">
+          <geometry><plane><normal>0 0 1</normal><size>10 10</size></plane></geometry>
+        </collision>
+        <visual name="vis">
+          <geometry><plane><normal>0 0 1</normal><size>10 10</size></plane></geometry>
+          <material><ambient>0.2 0.2 0.2 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="room_structure">
+      <static>true</static>
+      
+      <link name="wall_1">
+        <pose>0 3 1.25 0 0 0</pose>
+        <collision name="c1"><geometry><box><size>6 0.1 2.5</size></box></geometry></collision>
+        <visual name="v1"><geometry><box><size>6 0.1 2.5</size></box></geometry>
+        <material><ambient>0.7 0.7 0.8 1</ambient><diffuse>0.8 0.8 0.9 1</diffuse></material></visual>
+      </link>
+
+      <link name="wall_2">
+        <pose>-3 0 1.25 0 0 1.57</pose>
+        <collision name="c2"><geometry><box><size>6 0.1 2.5</size></box></geometry></collision>
+        <visual name="v2"><geometry><box><size>6 0.1 2.5</size></box></geometry>
+        <material><ambient>0.7 0.7 0.8 1</ambient></material></visual>
+      </link>
+
+      <link name="wall_3">
+        <pose>3 0 1.25 0 0 1.57</pose>
+        <collision name="c3"><geometry><box><size>6 0.1 2.5</size></box></geometry></collision>
+        <visual name="v3"><geometry><box><size>6 0.1 2.5</size></box></geometry>
+        <material><ambient>0.7 0.7 0.8 1</ambient></material></visual>
+      </link>
+
+      <link name="wall_4a">
+        <pose>-2 -3 1.25 0 0 0</pose>
+        <collision name="c4a"><geometry><box><size>2 0.1 2.5</size></box></geometry></collision>
+        <visual name="v4a"><geometry><box><size>2 0.1 2.5</size></box></geometry>
+        <material><ambient>0.7 0.7 0.8 1</ambient></material></visual>
+      </link>
+
+      <link name="wall_4b">
+        <pose>2 -3 1.25 0 0 0</pose>
+        <collision name="c4b"><geometry><box><size>2 0.1 2.5</size></box></geometry></collision>
+        <visual name="v4b"><geometry><box><size>2 0.1 2.5</size></box></geometry>
+        <material><ambient>0.7 0.7 0.8 1</ambient></material></visual>
+      </link>
+    </model>
+
+    <model name="furniture">
+      <static>true</static>
+      <link name="desk">
+        <pose>1 1 0.4 0 0 0</pose>
+        <collision name="c"><geometry><box><size>1.5 0.8 0.8</size></box></geometry></collision>
+        <visual name="v">
+          <geometry><box><size>1.5 0.8 0.8</size></box></geometry>
+          <material><script><uri>file://media/materials/scripts/gazebo.material</uri><name>Gazebo/Wood</name></script></material>
+        </visual>
+      </link>
+    </model>
+
+    <gui>
+      <camera name="user_camera">
+        <pose>8 -8 8 0 0.5 2.3</pose>
+      </camera>
+    </gui>
+    
+    <gui fullscreen='0'>
+    <camera name='user_camera'>
+     <pose>2.5 -2.5 2.0 0 0.35 2.35</pose>
+    <view_controller>orbit</view_controller>
+    </camera>
+   </gui>
+
+  </world>
+</sdf>

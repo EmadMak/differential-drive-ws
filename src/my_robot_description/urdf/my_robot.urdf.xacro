@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="differential_drive_robot">
+
+  <!-- Load shared params + component macros -->
+  <xacro:include filename="$(find my_robot_description)/urdf/common_properties.xacro"/>
+  <xacro:include filename="$(find my_robot_description)/urdf/mobile_base.xacro"/>
+  <xacro:include filename="$(find my_robot_description)/urdf/lidar.xacro"/>
+  <xacro:include filename="$(find my_robot_description)/urdf/gazebo_control.xacro"/>
+
+  <!-- Build robot -->
+  <xacro:mobile_base/>
+  <xacro:lidar/>
+
+  <!-- Gazebo-specific additions -->
+  <xacro:gazebo_control/>
+
+</robot>

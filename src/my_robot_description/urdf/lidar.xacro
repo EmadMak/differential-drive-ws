@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="lidar">
+
+    <joint name="lidar_joint" type="fixed">
+      <origin xyz="0 0 ${b+r}" rpy="0 0 0"/>
+      <parent link="body_link"/>
+      <child link="lidar_link"/>
+    </joint>
+
+    <link name="lidar_link">
+      <visual>
+        <origin xyz="0 0 0.025" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.05" length="0.05"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+
+      <!-- FIXED: this must be <collision>, not a stray <geometry> block -->
+      <collision>
+        <origin xyz="0 0 0.025" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.05" length="0.05"/>
+        </geometry>
+      </collision>
+
+      <inertial>
+        <mass value="0.5e-6"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <inertia ixx="0.5e-6" ixy="0.0" ixz="0.0" iyy="0.5e-6" iyz="0.0" izz="0.5e-6"/>
+      </inertial>
+    </link>
+
+  </xacro:macro>
+
+</robot>

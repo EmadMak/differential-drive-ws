@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="mobile_base">
+
+    <link name="base_footprint"/>
+
+    <joint name="body_link_joint" type="fixed">
+      <parent link="base_footprint"/>
+      <child link="body_link"/>
+    </joint>
+
+    <link name="body_link">
+      <visual>
+        <geometry>
+          <box size="${a} ${c} ${b}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 ${s1}" />
+        <material name="black"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <box size="${a} ${c} ${b}"/>
+        </geometry>
+        <origin rpy="0 0 0" xyz="0 0 ${s1}" />
+      </collision>
+
+      <xacro:inertia_body />
+    </link>
+
+    <joint name="wheel1_joint" type="continuous">
+      <parent link="body_link"/>
+      <child link="wheel1_link"/>
+      <origin xyz="${-s2} ${-s4} ${r}" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="50000" velocity="10"/>
+      <dynamics damping="1.0" friction="1.0"/>
+    </joint>
+
+    <link name="wheel1_link">
+      <visual>
+        <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+        <geometry>
+          <cylinder radius="${r}" length="${d}"/>
+        </geometry>
+        <material name="green"/>
+      </visual>
+
+      <collision>
+        <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+        <geometry>
+          <cylinder radius="${r}" length="${d}"/>
+        </geometry>
+      </collision>
+
+      <xacro:inertia_wheel/>
+    </link>
+
+    <joint name="wheel2_joint" type="continuous">
+      <parent link="body_link"/>
+      <child link="wheel2_link"/>
+      <origin xyz="${-s2} ${s4} ${r}" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="50000" velocity="10"/>
+      <dynamics damping="1.0" friction="1.0"/>
+    </joint>
+
+    <link name="wheel2_link">
+      <visual>
+        <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+        <geometry>
+          <cylinder radius="${r}" length="${d}"/>
+        </geometry>
+        <material name="green"/>
+      </visual>
+
+      <collision>
+        <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+        <geometry>
+          <cylinder radius="${r}" length="${d}"/>
+        </geometry>
+      </collision>
+
+      <xacro:inertia_wheel/>
+    </link>
+
+    <joint name="caster_joint" type="fixed">
+      <parent link="body_link"/>
+      <child link="caster_link"/>
+      <origin xyz="${s3} 0 ${r}" rpy="0 0 0"/>
+    </joint>
+
+    <link name="caster_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="${r}"/>
+        </geometry>
+        <material name="green"/>
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="${r}"/>
+        </geometry>
+      </collision>
+
+      <xacro:inertia_caster/>
+    </link>
+
+  </xacro:macro>
+
+</robot>
